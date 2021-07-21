@@ -23,6 +23,7 @@ const HeroSlide = memo((props: ISlideProps) => {
     shouldRenderMask,
     style,
     background,
+    pauseAutoplayDuration,
     onBackgroundLoad,
     children,
     navDescription,

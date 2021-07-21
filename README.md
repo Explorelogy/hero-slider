@@ -143,6 +143,7 @@ The Slide component accepts the following props:
 | background | `object` | (Shown below) | The background settings. You may pass CSS background properties just like you would style the background of an HTML element. The main difference is that the `backgroundImage` property will work just like an image tag `src` property instead of the typical background image URL. More information about these settings below this table. |
 | navDescription | `string` | `null` | If the developer is using a MenuNav or ButtonsNav component, a description for each slide may be passed. These descriptions will be shown in the nav components. |
 | style | React.CSSProperties | `null` | Inline CSS styling for the wrapper div element of the component. |
+| pauseAutoplayDuration | `number` | `null` | Pause the current slide for additional number of milliseconds. Ex: To allow a video on a slide to be played for 60 seconds |
 | onBackgroundLoad | (event: React.SyntheticEvent) => any | `null` | Callback that executes when the background image loads. |
 | children | `any` | `null` | React children. |
 

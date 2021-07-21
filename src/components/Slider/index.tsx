@@ -248,6 +248,8 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (settings.isSmartSliding) {
         smartAnimations(nextSlide);
       }
+      console.log(settings);
+      console.log(nextSlide);
       changeSlide(getNextSlide(activeSlideWatcher.current));
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
