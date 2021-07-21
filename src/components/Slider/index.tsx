@@ -33,6 +33,8 @@ const HeroSlider = memo((props: ISliderProps) => {
     onChange,
   } = props;
 
+  console.time('anim');
+
   /**
    * Slider reference object to calculate its dimensions.
    */
@@ -249,25 +251,32 @@ const HeroSlider = memo((props: ISliderProps) => {
         smartAnimations(nextSlide);
       }
 
-      // check if autoplay pause duration is available
       const allSlides = Array.isArray(props.children) ? [...props.children] : [props.children];
-      let nextChildAutoplayPauseDuration = 0;
-      if( props.children && allSlides.length >= nextSlide ){
+      let currentChildAutoplayPauseDuration = 0;
+      if( props.children && allSlides.length >= activeSlideWatcher.current ){
 
-        const nextSlideChild = allSlides[ nextSlide - 1 ];
-        nextChildAutoplayPauseDuration = nextSlideChild && nextSlideChild.props 
-          ? nextSlideChild.props.pauseAutoplayDuration : 0;
+        const currentSlideChild = allSlides[ activeSlideWatcher.current - 1 ];
+        currentChildAutoplayPauseDuration = currentSlideChild && currentSlideChild.props 
+          ? currentSlideChild.props.pauseAutoplayDuration
+          : 0;
+
       }
 
-      if( nextChildAutoplayPauseDuration && nextChildAutoplayPauseDuration > 0 ){
-        console.log('pause for check ' + nextChildAutoplayPauseDuration);
+      if( currentChildAutoplayPauseDuration && currentChildAutoplayPauseDuration > 0 ){
+        console.log('pause for 2' + currentChildAutoplayPauseDuration);
         autoplayInstance.pause();
         setTimeout(() => {
+          changeSlide(getNextSlide(activeSlideWatcher.current));
+          console.timeLog('anim');
+
           autoplayInstance.resume();
-        }, nextChildAutoplayPauseDuration);
+        }, currentChildAutoplayPauseDuration);
+        
+      }else{
+        changeSlide(getNextSlide(activeSlideWatcher.current));
+        console.timeLog('anim');
       }
 
-      changeSlide(getNextSlide(activeSlideWatcher.current));
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
   );
