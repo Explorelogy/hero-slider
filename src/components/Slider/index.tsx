@@ -248,7 +248,6 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (settings.isSmartSliding) {
         smartAnimations(nextSlide);
       }
-      changeSlide(getNextSlide(activeSlideWatcher.current));
 
       // check if autoplay pause duration is available
       const allSlides = Array.isArray(props.children) ? [...props.children] : [props.children];
@@ -267,6 +266,8 @@ const HeroSlider = memo((props: ISliderProps) => {
           autoplayInstance.resume();
         }, nextChildAutoplayPauseDuration);
       }
+
+      changeSlide(getNextSlide(activeSlideWatcher.current));
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
   );
