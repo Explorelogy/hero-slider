@@ -248,28 +248,24 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (settings.isSmartSliding) {
         smartAnimations(nextSlide);
       }
+      changeSlide(getNextSlide(activeSlideWatcher.current));
 
+      // check if autoplay pause duration is available
       const allSlides = Array.isArray(props.children) ? [...props.children] : [props.children];
       let nextChildAutoplayPauseDuration = 0;
       if( props.children && allSlides.length >= nextSlide ){
 
         const nextSlideChild = allSlides[ nextSlide - 1 ];
         nextChildAutoplayPauseDuration = nextSlideChild && nextSlideChild.props 
-          ? nextSlideChild.props.pauseAutoplayDuration
-          : 0;
-
+          ? nextSlideChild.props.pauseAutoplayDuration : 0;
       }
 
       if( nextChildAutoplayPauseDuration && nextChildAutoplayPauseDuration > 0 ){
-        console.log('pause for ' + nextChildAutoplayPauseDuration);
+        console.log('pause for check ' + nextChildAutoplayPauseDuration);
         autoplayInstance.pause();
         setTimeout(() => {
-          changeSlide(getNextSlide(activeSlideWatcher.current));
           autoplayInstance.resume();
-        }, nextChildAutoplayPauseDuration + settings.autoplayDuration);
-        
-      }else{
-        changeSlide(getNextSlide(activeSlideWatcher.current));
+        }, nextChildAutoplayPauseDuration);
       }
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
