@@ -33,8 +33,6 @@ const HeroSlider = memo((props: ISliderProps) => {
     onChange,
   } = props;
 
-  console.time('anim');
-
   /**
    * Slider reference object to calculate its dimensions.
    */
@@ -263,18 +261,15 @@ const HeroSlider = memo((props: ISliderProps) => {
       }
 
       if( currentChildAutoplayPauseDuration && currentChildAutoplayPauseDuration > 0 ){
-        console.log('pause for 2' + currentChildAutoplayPauseDuration);
         autoplayInstance.pause();
         setTimeout(() => {
           changeSlide(getNextSlide(activeSlideWatcher.current));
-          console.timeLog('anim');
 
           autoplayInstance.resume();
         }, currentChildAutoplayPauseDuration);
         
       }else{
         changeSlide(getNextSlide(activeSlideWatcher.current));
-        console.timeLog('anim');
       }
 
     },
