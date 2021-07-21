@@ -248,9 +248,24 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (settings.isSmartSliding) {
         smartAnimations(nextSlide);
       }
-      console.log(settings);
-      console.log(nextSlide);
-      changeSlide(getNextSlide(activeSlideWatcher.current));
+
+      const allSlides = Array.isArray(props.children) ? [...props.children] : [props.children];
+      let nextChildAutoplayPauseDuration = 0;
+      if( props.children && allSlides.length >= nextSlide ){
+
+        const nextSlideChild = allSlides[ nextSlide - 1 ];
+        nextChildAutoplayPauseDuration = nextSlideChild && nextSlideChild.props 
+          ? nextSlideChild.props.pauseAutoplayDuration
+          : 0;
+
+      }
+
+      if( nextChildAutoplayPauseDuration && nextChildAutoplayPauseDuration > 0 ){
+        console.log('pause for ' + nextChildAutoplayPauseDuration);
+        changeSlide(getNextSlide(activeSlideWatcher.current));
+      }else{
+        changeSlide(getNextSlide(activeSlideWatcher.current));
+      }
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
   );
