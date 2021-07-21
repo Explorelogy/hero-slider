@@ -120,6 +120,7 @@ export interface ISlideProps {
   background: IBackgroundProps
   navDescription: string
   style: React.CSSProperties
+  pauseAutoplayDuration: number
   onBackgroundLoad: TAnyFunction
   children: React.ReactChildren
 }

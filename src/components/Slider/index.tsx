@@ -248,7 +248,30 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (settings.isSmartSliding) {
         smartAnimations(nextSlide);
       }
-      changeSlide(getNextSlide(activeSlideWatcher.current));
+
+      const allSlides = Array.isArray(props.children) ? [...props.children] : [props.children];
+      let currentChildAutoplayPauseDuration = 0;
+      if( props.children && allSlides.length >= activeSlideWatcher.current ){
+
+        const currentSlideChild = allSlides[ activeSlideWatcher.current - 1 ];
+        currentChildAutoplayPauseDuration = currentSlideChild && currentSlideChild.props 
+          ? currentSlideChild.props.pauseAutoplayDuration
+          : 0;
+
+      }
+
+      if( currentChildAutoplayPauseDuration && currentChildAutoplayPauseDuration > 0 ){
+        autoplayInstance.pause();
+        setTimeout(() => {
+          changeSlide(getNextSlide(activeSlideWatcher.current));
+
+          autoplayInstance.resume();
+        }, currentChildAutoplayPauseDuration);
+        
+      }else{
+        changeSlide(getNextSlide(activeSlideWatcher.current));
+      }
+
     },
     [changeSlide, getNextSlide, settings.isSmartSliding, smartAnimations],
   );
@@ -557,25 +580,25 @@ const HeroSlider = memo((props: ISliderProps) => {
       if (
         settings.shouldAutoplay
       ) {
-        console.log('autoplayInstance.state', autoplayInstance.state);
-        console.log('EState', EState[autoplayInstance.state]);
-        console.log('props.inView', props.inView);
+        // console.log('autoplayInstance.state', autoplayInstance.state);
+        // console.log('EState', EState[autoplayInstance.state]);
+        // console.log('props.inView', props.inView);
         if (inViewTimeoutHandler) clearTimeout(inViewTimeoutHandler as number);
         switch (true) {
           case isManuallyPaused:
             break;
           // When not in view, stop the autoplay.
           case !props.inView:
-            console.log('STOPPPING');
+            // console.log('STOPPPING');
             autoplayInstance.stop();
             setInViewTimeoutHandler(undefined);
             break;
           // When in view and idle, start it.
           case autoplayInstance.state === EState.IDLE && props.inView: {
-            console.log('STARTING TIMEOUT');
+            // console.log('STARTING TIMEOUT');
             const timeoutId = setTimeout(
               () => {
-                console.log('STARTING');
+                // console.log('STARTING');
                 autoplayInstance.start();
               },
               settings.autoplayHandlerTimeout,
@@ -585,10 +608,10 @@ const HeroSlider = memo((props: ISliderProps) => {
           }
           // When in view and paused, resume it.
           case autoplayInstance.state === EState.PAUSED && props.inView: {
-            console.log('RESUMING TIMEOUT');
+            // console.log('RESUMING TIMEOUT');
             const timeoutId = setTimeout(
               () => {
-                console.log('RESUMING');
+                // console.log('RESUMING');
                 autoplayInstance.resume();
               },
               settings.autoplayHandlerTimeout,
@@ -680,10 +703,10 @@ const HeroSlider = memo((props: ISliderProps) => {
 
   useEffect(
     () => {
-      console.log('isDoneSliding', isDoneSliding);
+      // console.log('isDoneSliding', isDoneSliding);
       if (isDoneSliding) {
         if (settings.shouldAutoplay && !isManuallyPaused) {
-          console.log('RESETTING');
+          // console.log('RESETTING');
           autoplayInstance.reset();
         }
       }
