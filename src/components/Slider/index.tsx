@@ -743,8 +743,8 @@ const WithProvider = memo((props: IWithProviderProps) => {
         ref={ref}
       >
         <HeroSlider
-          inView={inView}
           {...rest}
+          inView={inView}
         />
       </div>
     </Context>
